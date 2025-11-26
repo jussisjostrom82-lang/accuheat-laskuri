@@ -157,21 +157,25 @@ st.dataframe(df.style.format(format_dict), use_container_width=True)
 
 # Visuaalinen vertailu
 st.subheader("Kustannusrakenteen vertailu")
-chart_data = pd.DataFrame({
-    "Kategoria": ["Energia", "Teho", "Tehokkuuslisä/hyvitys (netto)"],
-    "Nykytilanne": [
-        tulos_nyky["Energiamaksu (€)"], 
-        tulos_nyky["Tehomaksu (€)"], 
-        tulos_nyky["Summa (alv 0)"] - (tulos_nyky["Energiamaksu (€)"] + tulos_nyky["Tehomaksu (€)"])
-    ],
-    "Nova": [
-        tulos_nova["Energiamaksu (€)"], 
-        tulos_nova["Tehomaksu (€)"], 
-        tulos_nova["Summa (alv 0)"] - (tulos_nova["Energiamaksu (€)"] + tulos_nova["Tehomaksu (€)"])
-    ]
-})
 
-st.bar_chart(chart_data.set_index("Kategoria"))
+chart_data = pd.DataFrame(
+    {
+        "Nykytilanne": [
+            tulos_nyky["Energiamaksu (€)"],
+            tulos_nyky["Tehomaksu (€)"],
+            tulos_nyky["Summa (alv 0)"],
+        ],
+        "Nova": [
+            tulos_nova["Energiamaksu (€)"],
+            tulos_nova["Tehomaksu (€)"],
+            tulos_nova["Summa (alv 0)"],
+        ],
+    },
+    index=["Energia (€/v)", "Teho (€/v)", "Yhteensä (alv 0, €/v)"],
+)
+
+st.bar_chart(chart_data)
+
 
 # Selite
 st.info(f"""
@@ -182,4 +186,5 @@ st.info(f"""
 """)
 
 # Tekijänoikeus / Footer
+
 st.caption("AccuHeat Nova Laskuri v1.0 | Perustuu Vantaan Energian 1.3.2025 hinnastotietoihin.")
